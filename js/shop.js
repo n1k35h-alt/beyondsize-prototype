@@ -3,22 +3,22 @@ const products = [
     id: 1,
     name: "Woolen-Scarf-red",
     price: 650,
-    image: "assets/products/red-scarf",
+    image: "assets/red-scarf.jpg",
     stock: true
   },
   {
     id: 2,
     name: "Woolen-Scarf-Black",
     price: 650,
-    image: "assets/products/black-scarf",
+    image: "assets/black-scarf.jpg",
     stock: true
   },
   {
     id: 3,
-    name: "Woolen-Scarf-",
-    price: 3800,
-    image: "assets/products/jacket3.png",
-    stock: false
+    name: "Woolen-Scarf-blue",
+    price: 650,
+    image: "assets/blue-scarf.jpg",
+    stock: true
   }
 ];
 
