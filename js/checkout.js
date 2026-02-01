@@ -1,14 +1,7 @@
 function placeOrder() {
-  const order = {
-    name: name.value,
-    phone: phone.value,
-    address: address.value,
-    txn: txn.value,
-    cart: JSON.parse(localStorage.getItem("cart"))
-  };
-
-  console.log(order);
-  alert("Order placed! Owner will confirm.");
-
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  localStorage.setItem("orders", JSON.stringify(cart));
   localStorage.removeItem("cart");
+  alert("Order placed (prototype)");
+  location.href = "index.html";
 }

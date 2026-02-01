@@ -1,46 +1,54 @@
-const products = [
-  {
-    id: 1,
-    name: "Woolen-Scarf-red",
-    price: 650,
-    image: "assets/red-scarf.jpg",
-    stock: true
-  },
-  {
-    id: 2,
-    name: "Woolen-Scarf-Black",
-    price: 650,
-    image: "assets/black-scarf.jpg",
-    stock: true
-  },
-  {
-    id: 3,
-    name: "Woolen-Scarf-blue",
-    price: 650,
-    image: "assets/blue-scarf.jpg",
-    stock: true
-  }
-];
+// shop.js
 
-const grid = document.getElementById("products");
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-products.forEach(p => {
-  grid.innerHTML += `
-    <div class="product">
-      <img src="${p.image}">
-      <h3>${p.name}</h3>
-      ${
-        p.stock
-          ? `<p>Rs ${p.price}</p><a class="btn" onclick="addToCart(${p.id})">Add</a>`
-          : `<div class="out">Out of stock</div>`
-      }
-    </div>
-  `;
-});
-
-function addToCart(id) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push(products.find(p => p.id === id));
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Added to cart");
+// Update cart count
+function updateCartCount() {
+  const countSpan = document.getElementById("cart-count");
+  if(countSpan) countSpan.textContent = cart.length;
 }
+
+// Add product to cart
+function addToCart(name, price) {
+  cart.push({ name, price });
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+  alert(`${name} added to cart`);
+}
+
+// Remove product by index (used in cart page)
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+  renderCart();
+}
+
+// Render cart on cart.html
+function renderCart() {
+  const container = document.getElementById("cart-items");
+  if (!container) return;
+
+  container.innerHTML = "";
+  let total = 0;
+
+  if(cart.length === 0) {
+    container.innerHTML = "<p>Your cart is empty</p>";
+    return;
+  }
+
+  cart.forEach((item, i) => {
+    total += item.price;
+    container.innerHTML += `
+      <p>${item.name} - Rs. ${item.price} 
+        <button onclick="removeFromCart(${i})">Remove</button>
+      </p>
+    `;
+  });
+
+  container.innerHTML += `<hr><strong>Total: Rs. ${total}</strong>`;
+}
+
+// Initialize
+updateCartCount();
+renderCart();

@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Admin | beyondsize</title>
 </head>
-<body class="p-6">
+<body>
 
-<h1 class="text-3xl">Admin Orders</h1>
-<p>Orders will appear here (Firebase)</p>
+<h2 style="text-align:center;margin:50px;">Orders (Prototype)</h2>
+<div id="orders-container" style="max-width:600px;margin:auto;"></div>
+
+<script>
+const orders = JSON.parse(localStorage.getItem("orders")) || [];
+const container = document.getElementById("orders-container");
+
+if(orders.length === 0) {
+  container.innerHTML = "<p>No orders yet</p>";
+} else {
+  let total = 0;
+  orders.forEach(item => {
+    total += item.price;
+    container.innerHTML += `<p>${item.name} - Rs. ${item.price}</p>`;
+  });
+  container.innerHTML += `<hr><strong>Total: Rs. ${total}</strong>`;
+}
+</script>
 
 </body>
 </html>

@@ -1,26 +1,187 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Checkout</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | beyondsize</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .checkout-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-bottom: 25px;
+    }
+
+    .section h3 {
+      margin-bottom: 10px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .input-group input,
+    .input-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .order-summary {
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .order-summary p {
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .total {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .payment-method {
+      text-align: center;
+    }
+
+    .payment-method img {
+      max-width: 220px;
+      margin-top: 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    .place-order-btn {
+      width: 100%;
+      background: #28a745;
+      color: #fff;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .note {
+      font-size: 14px;
+      color: #666;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
 </head>
-<body class="p-6">
+<body>
 
-<h1 class="text-3xl mb-4">Checkout</h1>
+  <div class="checkout-container">
+    <h2>Checkout</h2>
 
-<input id="name" placeholder="Name" class="border p-2 w-full mb-2">
-<input id="phone" placeholder="Phone" class="border p-2 w-full mb-2">
-<textarea id="address" placeholder="Address" class="border p-2 w-full mb-2"></textarea>
+    <!-- Customer Details -->
+    <div class="section">
+      <h3>Customer Details</h3>
 
-<h2 class="font-bold mt-4">Pay via e-Wallet</h2>
-<img src="assets/QR.jpeg" class="my-4">
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Your Name">
+      </div>
 
-<input id="txn" placeholder="Transaction ID" class="border p-2 w-full mb-4">
+      <div class="input-group">
+        <label>Phone Number</label>
+        <input type="text" placeholder="98XXXXXXXX">
+      </div>
 
-<button onclick="placeOrder()" class="bg-black text-white px-6 py-3">
-Place Order
-</button>
+      <div class="input-group">
+        <label>Delivery Address</label>
+        <textarea rows="3" placeholder="Your address"></textarea>
+      </div>
+    </div>
 
-<script src="js/checkout.js"></script>
+    <!-- Order Summary -->
+    <div class="section">
+      <h3>Order Summary</h3>
+      <div class="order-summary" id="orderSummary"></div>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="section payment-method">
+      <h3>Payment Method</h3>
+      <p><strong>Pay via eSewa (QR)</strong></p>
+
+      <!-- KEEP YOUR QR IMAGE -->
+      <img src="assets/QR.jpeg" alt="eSewa QR Code">
+
+      <p class="note">
+        Scan the QR using eSewa app and complete payment.<br>
+        After payment, click "Place Order".
+      </p>
+    </div>
+
+    <button class="place-order-btn">Place Order</button>
+  </div>
+
+  <!-- CART → CHECKOUT SCRIPT -->
+  <script>
+    const orderSummary = document.getElementById("orderSummary");
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let total = 0;
+
+    if (cart.length === 0) {
+      orderSummary.innerHTML = "<p>Your cart is empty</p>";
+    } else {
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        orderSummary.innerHTML += `
+          <p>
+            <span>${item.name} × ${item.quantity}</span>
+            <span>Rs. ${itemTotal}</span>
+          </p>
+        `;
+      });
+
+      orderSummary.innerHTML += `
+        <hr>
+        <p class="total">
+          <span>Total</span>
+          <span>Rs. ${total}</span>
+        </p>
+      `;
+    }
+  </script>
+
 </body>
 </html>
